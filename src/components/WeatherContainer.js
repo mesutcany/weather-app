@@ -12,7 +12,9 @@ import { filterHourlyForecasts } from '../helpers';
 
 const WeatherContainer = () => {
   const [city, setCity] = useState('izmir');
-  const [forecastInfo, setForecastInfo] = useState({});
+  const [forecastInfo, setForecastInfo] = useState({
+    currently: { temperature: 40.7, icon: 'cloudy' },
+  });
   const [message, setMessage] = useState('');
   const [tempType, setTempType] = useState('celsius');
 
@@ -37,7 +39,7 @@ const WeatherContainer = () => {
               setForecastInfo(normalizedForecast);
             })
             .catch((err) => {
-              setMessage(err.message);
+              //   setMessage('Something went wrong...');
             });
         },
         (error) => setMessage('Sevdiğin bir şehrin ismini yaz')

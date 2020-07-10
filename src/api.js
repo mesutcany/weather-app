@@ -1,4 +1,4 @@
-const KEY = '65da5b761ce36d248acbb3694f4cd78a';
+const KEY = '0a9155e5c9e6bb58eb900f56be30b57e';
 const CORS = 'https://cors-anywhere.herokuapp.com/';
 const FORECAST_URL = `${CORS}https://api.darksky.net/forecast/${KEY}`;
 const COORDS_URL = `${CORS}https://darksky.net/geo?q=`;

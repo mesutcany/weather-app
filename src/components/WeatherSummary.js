@@ -4,7 +4,10 @@ import WeatherIcon from './WeatherIcon';
 const WeatherSummary = ({ currently }) => {
   return (
     <div className="weather-summary">
-      {currently.summary} - {currently.icon}
+      <h2 className="weather-summary__temperature">
+        {currently.temperature} °C
+      </h2>
+      <WeatherIcon icon={currently.icon} />
     </div>
   );
 };

@@ -16,6 +16,11 @@ const filterHourlyForecasts = (forecasts) => {
   });
 };
 
+const formatIconString = (iconString) => {
+  return iconString.toUpperCase().split('-').join('_');
+};
+
+// const
 // const normalizeData = (data) => {
 //   return {
 //     currently: data.currently,
@@ -23,4 +28,4 @@ const filterHourlyForecasts = (forecasts) => {
 //   };
 // };
 
-export { isInToday, filterHourlyForecasts };
+export { isInToday, filterHourlyForecasts, formatIconString };
