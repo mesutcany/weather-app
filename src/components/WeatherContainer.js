@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Search,
   Select,
@@ -8,40 +8,95 @@ import {
   Message,
 } from './';
 import api from '../api';
+import { filterHourlyForecasts } from '../helpers';
 
 const WeatherContainer = () => {
   const [city, setCity] = useState('izmir');
   const [forecastInfo, setForecastInfo] = useState({});
   const [message, setMessage] = useState('');
+  const [tempType, setTempType] = useState('celsius');
 
-  const handleChange = (event) => {
+  const handleCityChange = (event) => {
     setCity(event.target.value);
   };
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const { latitude, longitude } = position.coords;
+        console.log('latlong', latitude, longitude);
+        api
+          .getForecasts(latitude, longitude)
+          .then((forecast) => {
+            const normalizedForecast = {
+              currently: forecast.currently,
+              hourly: filterHourlyForecasts(forecast.hourly.data),
+            };
+            console.log(normalizedForecast);
+            setForecastInfo(normalizedForecast);
+          })
+          .catch((err) => {
+            setMessage(err.message);
+          });
+      });
+    }
+  }, []);
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
+      const normalizedCity = city.toLocaleLowerCase().trim();
+      if (normalizedCity == '') return;
+
+      setMessage('');
+
       api
-        .getForecasts(30, 40)
-        .then((data) => {
-            
+        .getLatLongByCityName(normalizedCity)
+        .then(({ latitude, longitude }) => {
+          return api.getForecasts(latitude, longitude);
         })
-        .catch((err) => setMessage(err.message));
+        .then((forecast) => {
+          const normalizedForecast = {
+            currently: forecast.currently,
+            hourly: filterHourlyForecasts(forecast.hourly.data),
+          };
+          console.log(normalizedForecast);
+          setForecastInfo(normalizedForecast);
+        })
+        .catch((err) => {
+          setMessage(err.message);
+        });
     }
+  };
+
+  const handleTempTypeChange = (event) => {
+    console.log(event.target.value);
+    setTempType(event.target.value);
   };
 
   return (
     <div className="weather-container">
       <Search
         value={city}
-        handleChange={handleChange}
+        handleChange={handleCityChange}
         handleKeyPress={handleKeyPress}
       />
-      <Select />
-      <WeatherSummary />
-      <ForecastList />
-      <WeatherIcon />
-      <Message />
+      <Select
+        options={['celsius', 'fahrenheit']}
+        value={tempType}
+        handleChange={handleTempTypeChange}
+      />
+      {message ? (
+        <Message text={message} />
+      ) : (
+        <>
+          {forecastInfo.currently && (
+            <div clasname="forecast-content">
+              <WeatherSummary />
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 };

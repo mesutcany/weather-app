@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
-const WeatherIcon = () => {
-  return <div className="weather-icon">WeatherIcon</div>;
+const WeatherIcon = ({ width = 100, height = 100 }) => {
+  const iconRef = useRef();
+
+  return <canvas ref={iconRef} width={width} height={height}></canvas>;
 };
 
 export default WeatherIcon;
