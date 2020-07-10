@@ -20,6 +20,10 @@ const formatIconString = (iconString) => {
   return iconString.toUpperCase().split('-').join('_');
 };
 
+const fahrenheitToCelsius = (fahrenheit) => {
+  // C = (5/9) * (F - 32)
+  return ((5 / 9) * (fahrenheit - 32)).toFixed(2);
+};
 // const
 // const normalizeData = (data) => {
 //   return {
@@ -28,4 +32,9 @@ const formatIconString = (iconString) => {
 //   };
 // };
 
-export { isInToday, filterHourlyForecasts, formatIconString };
+export {
+  isInToday,
+  filterHourlyForecasts,
+  formatIconString,
+  fahrenheitToCelsius,
+};

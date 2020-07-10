@@ -11,10 +11,8 @@ import api from '../api';
 import { filterHourlyForecasts } from '../helpers';
 
 const WeatherContainer = () => {
-  const [city, setCity] = useState('izmir');
-  const [forecastInfo, setForecastInfo] = useState({
-    currently: { temperature: 40.7, icon: 'cloudy' },
-  });
+  const [city, setCity] = useState('');
+  const [forecastInfo, setForecastInfo] = useState({});
   const [message, setMessage] = useState('');
   const [tempType, setTempType] = useState('celsius');
 
@@ -39,7 +37,7 @@ const WeatherContainer = () => {
               setForecastInfo(normalizedForecast);
             })
             .catch((err) => {
-              //   setMessage('Something went wrong...');
+              setMessage(err.message);
             });
         },
         (error) => setMessage('Sevdiğin bir şehrin ismini yaz')
@@ -97,7 +95,11 @@ const WeatherContainer = () => {
         <>
           {forecastInfo.currently && (
             <div clasname="forecast-content">
-              <WeatherSummary currently={forecastInfo.currently} />
+              <WeatherSummary
+                temperature={forecastInfo.currently.temperature}
+                tempType={tempType}
+                icon={forecastInfo.currently.icon}
+              />
             </div>
           )}
         </>

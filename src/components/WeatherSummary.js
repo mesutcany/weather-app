@@ -1,13 +1,19 @@
 import React from 'react';
 import WeatherIcon from './WeatherIcon';
+import { fahrenheitToCelsius } from '../helpers';
 
-const WeatherSummary = ({ currently }) => {
+const WeatherSummary = ({ temperature, icon, tempType }) => {
   return (
     <div className="weather-summary">
       <h2 className="weather-summary__temperature">
-        {currently.temperature} °C
+        {tempType == 'fahrenheit'
+          ? temperature
+          : fahrenheitToCelsius(temperature)}
+        <span className="weather-summary__temp-icon">
+          {tempType == 'fahrenheit' ? '°F' : '°C'}
+        </span>
       </h2>
-      <WeatherIcon icon={currently.icon} />
+      <WeatherIcon icon={icon} />
     </div>
   );
 };
