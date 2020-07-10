@@ -4,6 +4,7 @@ const Search = ({ value, handleChange, handleKeyPress }) => {
   return (
     <div className="search">
       <input
+        className="search_input"
         type="text"
         value={value}
         onChange={handleChange}

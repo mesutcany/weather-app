@@ -1,0 +1,25 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  text-align: center;
+  font-family: 'Lato', sans-serif;
+}
+
+.weather-container {
+  padding-top: 40px;
+  background: lightskyblue;
+  height: 100vh;
+}
+
+.search {
+  margin-bottom: 10px;
+}
+
+.search_input {
+  width: 50%;
+  max-width: 350px;
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: none;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+}

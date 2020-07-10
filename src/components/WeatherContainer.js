@@ -22,23 +22,26 @@ const WeatherContainer = () => {
 
   useEffect(() => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const { latitude, longitude } = position.coords;
-        console.log('latlong', latitude, longitude);
-        api
-          .getForecasts(latitude, longitude)
-          .then((forecast) => {
-            const normalizedForecast = {
-              currently: forecast.currently,
-              hourly: filterHourlyForecasts(forecast.hourly.data),
-            };
-            console.log(normalizedForecast);
-            setForecastInfo(normalizedForecast);
-          })
-          .catch((err) => {
-            setMessage(err.message);
-          });
-      });
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          console.log('latlong', latitude, longitude);
+          api
+            .getForecasts(latitude, longitude)
+            .then((forecast) => {
+              const normalizedForecast = {
+                currently: forecast.currently,
+                hourly: filterHourlyForecasts(forecast.hourly.data),
+              };
+              console.log(normalizedForecast);
+              setForecastInfo(normalizedForecast);
+            })
+            .catch((err) => {
+              setMessage(err.message);
+            });
+        },
+        (error) => setMessage('Sevdiğin bir şehrin ismini yaz')
+      );
     }
   }, []);
 
@@ -49,7 +52,7 @@ const WeatherContainer = () => {
       if (normalizedCity == '') return;
 
       setMessage('');
-
+      setForecastInfo({});
       api
         .getLatLongByCityName(normalizedCity)
         .then(({ latitude, longitude }) => {
@@ -92,7 +95,7 @@ const WeatherContainer = () => {
         <>
           {forecastInfo.currently && (
             <div clasname="forecast-content">
-              <WeatherSummary />
+              <WeatherSummary currently={forecastInfo.currently} />
             </div>
           )}
         </>
