@@ -1,14 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Modak&display=swap');
+
 body {
   margin: 0;
-  overflow: hidden;
   text-align: center;
   font-family: 'Lato', sans-serif;
+  background: lightskyblue;
+  color: #fff;
 }
 
 .weather-container {
   padding-top: 40px;
-  background: lightskyblue;
-  height: 100vh;
+  margin-bottom: 100px;
 }
 
 .search {
@@ -26,6 +28,8 @@ body {
 
 .select {
   margin-bottom: 10px;
+  padding: 5px;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
 }
 
 .weather-summary {
@@ -33,7 +37,71 @@ body {
 }
 
 .weather-summary__temperature {
-  margin: 0;
+  margin-top: 0;
   font-size: 40px;
   color: white;
+}
+
+.message__text {
+  color: #fff;
+}
+
+.forecast-list {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  color: #fff;
+}
+
+.forecast-location {
+  width: 50%;
+  margin: 20px auto 0;
+  text-align: left;
+}
+
+.forecast-list__table {
+  border-collapse: collapse;
+  width: 50%;
+}
+
+.forecast-list__table td:nth-child(1) {
+  width: 60px;
+}
+
+.forecast-list__table td,
+th {
+  text-align: left;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  padding: 10px;
+}
+
+tr th:last-child,
+tr td:last-child {
+  border-right: 0;
+}
+
+.forecast-list__table tr:last-child td {
+  border-bottom: 0;
+}
+
+.forecast-enter {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.forecast-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.forecast-enter-exit {
+  opacity: 1;
+}
+
+.forecast-enter-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 300ms, transform 300ms;
 }

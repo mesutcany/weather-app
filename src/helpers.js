@@ -21,20 +21,18 @@ const formatIconString = (iconString) => {
 };
 
 const fahrenheitToCelsius = (fahrenheit) => {
-  // C = (5/9) * (F - 32)
   return ((5 / 9) * (fahrenheit - 32)).toFixed(2);
 };
-// const
-// const normalizeData = (data) => {
-//   return {
-//     currently: data.currently,
-//     hourly: filterHourlyForecasts(data.hourly.data),
-//   };
-// };
+
+const timestampToHour = (timestamp) => {
+  const date = new Date(timestamp * 1000);
+  return `${date.getHours()}:00`;
+};
 
 export {
   isInToday,
   filterHourlyForecasts,
   formatIconString,
   fahrenheitToCelsius,
+  timestampToHour,
 };

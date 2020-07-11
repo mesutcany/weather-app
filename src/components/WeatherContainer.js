@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { CSSTransition } from 'react-transition-group';
 import {
   Search,
   Select,
   WeatherSummary,
   ForecastList,
-  WeatherIcon,
   Message,
+  Loading,
 } from './';
 import api from '../api';
 import { filterHourlyForecasts } from '../helpers';
@@ -15,6 +16,7 @@ const WeatherContainer = () => {
   const [forecastInfo, setForecastInfo] = useState({});
   const [message, setMessage] = useState('');
   const [tempType, setTempType] = useState('celsius');
+  const [isLoading, setIsloading] = useState(true);
 
   const handleCityChange = (event) => {
     setCity(event.target.value);
@@ -25,7 +27,6 @@ const WeatherContainer = () => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          console.log('latlong', latitude, longitude);
           api
             .getForecasts(latitude, longitude)
             .then((forecast) => {
@@ -33,11 +34,12 @@ const WeatherContainer = () => {
                 currently: forecast.currently,
                 hourly: filterHourlyForecasts(forecast.hourly.data),
               };
-              console.log(normalizedForecast);
               setForecastInfo(normalizedForecast);
+              setIsloading(false);
             })
             .catch((err) => {
               setMessage(err.message);
+              setIsloading(false);
             });
         },
         (error) => setMessage('Sevdiğin bir şehrin ismini yaz')
@@ -53,6 +55,8 @@ const WeatherContainer = () => {
 
       setMessage('');
       setForecastInfo({});
+      setIsloading(true);
+
       api
         .getLatLongByCityName(normalizedCity)
         .then(({ latitude, longitude }) => {
@@ -60,14 +64,16 @@ const WeatherContainer = () => {
         })
         .then((forecast) => {
           const normalizedForecast = {
+            location: city,
             currently: forecast.currently,
             hourly: filterHourlyForecasts(forecast.hourly.data),
           };
-          console.log(normalizedForecast);
           setForecastInfo(normalizedForecast);
+          setIsloading(false);
         })
         .catch((err) => {
           setMessage(err.message);
+          setIsloading(false);
         });
     }
   };
@@ -89,18 +95,32 @@ const WeatherContainer = () => {
         value={tempType}
         handleChange={handleTempTypeChange}
       />
-      {message ? (
-        <Message text={message} />
+      {isLoading ? (
+        <Loading />
       ) : (
         <>
-          {forecastInfo.currently && (
-            <div clasname="forecast-content">
-              <WeatherSummary
-                temperature={forecastInfo.currently.temperature}
-                tempType={tempType}
-                icon={forecastInfo.currently.icon}
-              />
-            </div>
+          {message ? (
+            <Message text={message} />
+          ) : (
+            <>
+              {forecastInfo.currently && (
+                <div className="forecast-content">
+                  <WeatherSummary
+                    temperature={forecastInfo.currently.temperature}
+                    tempType={tempType}
+                    icon={forecastInfo.currently.icon}
+                  />
+                  <h4 className="forecast-location">
+                    {forecastInfo.location &&
+                      forecastInfo.location.toUpperCase()}
+                  </h4>
+                  <ForecastList
+                    forecasts={forecastInfo.hourly}
+                    tempType={tempType}
+                  />
+                </div>
+              )}
+            </>
           )}
         </>
       )}

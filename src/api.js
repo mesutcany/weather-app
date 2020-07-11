@@ -5,7 +5,7 @@ const COORDS_URL = `${CORS}https://darksky.net/geo?q=`;
 
 const getForecasts = (lat, long) => {
   return fetch(`${FORECAST_URL}/${lat},${long}`).then((response) => {
-    if (response.status == 400) {
+    if (response.status >= 400) {
       throw new Error("Can't find the forecasts for the specified location :(");
     }
     return response.json();
@@ -15,7 +15,7 @@ const getForecasts = (lat, long) => {
 const getLatLongByCityName = (cityName) => {
   return fetch(`${COORDS_URL}${cityName}`).then((response) => {
     console.log('city name', response.status);
-    if (response.status == 400) {
+    if (response.status >= 400) {
       throw new Error("Can't find the forecasts for the specified location :(");
     }
     return response.json();
